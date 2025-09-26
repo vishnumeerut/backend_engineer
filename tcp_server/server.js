@@ -2,7 +2,19 @@ import net from "node:net";
 
 
 const server = net.createServer((socket) => {
-    console.log("Server Connected..")
+    console.log("Client Connected..")
+    socket.on("data", (chunk) => {
+        console.log("Data Received by server:-", chunk.toString());
+
+        socket.write(`Received by client:-> ${chunk}`);
+        socket.end()
+    })
+
+    socket.on("error", (err) => {
+        console.log("Error is:-", err)
+    })
+
+    
 })
 
 
