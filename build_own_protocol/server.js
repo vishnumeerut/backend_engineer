@@ -5,7 +5,7 @@ const server = net.createServer((socket) => {
     console.log("Client Connected...")
 
 
-    socket.write("Welcome to the build protocol")
+    // socket.write("Welcome to the build protocol")
 
 
     socket.on("data", (data) => {

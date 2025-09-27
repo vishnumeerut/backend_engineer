@@ -21,6 +21,12 @@ async function startChat () {
         console.log("Connected to the server..")
     })
 
+
+    // Get the username and token
+    const username = await rl.question("Enter Your username:->")
+    const token = await rl.question("Enter Your token:->")
+
+    console.log(username, token)
     client.on("data", (data) => {
         console.log("Data received by client:-", data.toString())
     })
