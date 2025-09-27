@@ -1,17 +1,20 @@
-import readline from "node:readline/promises"
+import net from "node:net";
 
-async function startChat () {
-    const rl = readline.createInterface({
-        input:process.stdin,
-        output:process.stdout,
-        prompt:":->"
+
+const server = net.createServer((socket) => {
+    console.log("Client Connected...")
+
+
+    socket.write("Welcome to the build protocol")
+
+
+    socket.on("data", (data) => {
+        console.log(`Data received:-> ${data.toString()}`)
     })
-
-    const answer = await rl.question("How are You!")
-    console.log("Output is:-", answer)
-
-}
+})
 
 
 
-startChat()
+server.listen(2222, () => {
+    console.log("Server is listening on port:- 2222")
+});
