@@ -17,6 +17,7 @@ const server = net.createServer((socket) => {
     // Process data assuming each 'data' event is a complete message.
     socket.on("data", (data) => {
         const parsedMessage = parseMessage(data)
+        // console.log("parsedMessage is:-", parsedMessage)
         if(!parsedMessage) {
             console.error("Invalid message format.")
             return;
@@ -29,7 +30,48 @@ const server = net.createServer((socket) => {
 
 
 function handleMessage(socket, parsedMessage) {
-    
+    switch(parsedMessage.command){
+        case "AUTH":
+            handleAuth(socket, parsedMessage)
+            break;
+        // case "JOIN":
+        //     handleJoin(socket, parsedMessage)
+        //     break;
+        
+    }
+}
+
+function handleAuth(socket, parsedMessage) {
+    const user = parsedMessage.headers.User
+    const token = parsedMessage.headers.Token
+
+
+    // todo: move secret to somewhere in db don't  hard code.
+
+    if(user && token && token === "secret123"){
+        socket.authenticated = true,
+        socket.username = user
+
+        const result = formatResponse("OK", "AUTH", {"Content-Length":0}, "")
+        socket.write(result);
+
+    }
+}
+
+function formatResponse(command, responseFor, headers, body, user) {
+    const startLine = `CHAT/1.0 ${command}`
+    const headerLines = [];
+    headerLines.push(`Response-for: ${responseFor}`);
+    if(user){
+        headerLines.push(`${user}`)
+    }
+
+    for(const key in headers){
+        headerLines.push(`${key}: ${headers[key]}`)
+    }
+
+
+    return `${startLine}\r\n${headerLines.join("\r\n")}\r\n\r\n${body}`
 }
 
 function parseMessage(data) {
