@@ -19,7 +19,6 @@ async function startChat() {
 
     const client = net.createConnection({port:PORT, host:HOST}, () => {
         console.log("✅ Connected to server!");
-        client.write("Hello server:",);
     })
 
 
@@ -36,7 +35,13 @@ async function startChat() {
         ""
     )
 
-    console.log(authCommand)
+
+    client.write(authCommand);
+
+    client.on('data', (data) => {
+        console.log('Received: ', data.toString());
+    });
+
 
 
 
@@ -64,5 +69,6 @@ function buildCommand(command, headers, body) {
     }
 
 
-    return `${startLine}\n${headerLines.join("\n")}\n${body}`
+    return `${startLine}\r\n${headerLines.join('\r\n')}\r\n\r\n${body}`;
+    
 }
