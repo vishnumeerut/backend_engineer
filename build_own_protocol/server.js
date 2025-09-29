@@ -9,7 +9,7 @@ const server = net.createServer((socket) => {
 
 
     socket.on("data", (data) => {
-        console.log(`Data received:-> ${data.toString()}`)
+        console.log(`Data received from client side:-> ${data.toString()}`)
     })
 })
 
